@@ -1,0 +1,22 @@
+body {
+    margin: 0px;
+}
+ul {
+    padding: 5px;
+    list-style: none;
+}
+#menu {
+    border: 1px solid black;
+}
+#menu li {
+    display: inline;
+}
+#tools {
+    width: 150px;
+    float: left;
+    border: 1px solid black;
+}
+#svgdiv {
+    float: left;
+    border: 1px solid black;
+}

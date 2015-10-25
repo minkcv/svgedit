@@ -1,0 +1,43 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="svgedit.css">
+<script src="point.js" type="text/javascript"></script>
+<script src="svgedit.js" type="text/javascript"></script>
+
+</head>
+<body>
+<div id="menu">
+    <ul>
+        <li>File</li>
+        <li>Edit</li>
+        <li><a id='download link' href-lang='image/svg+xml' href='' title='file.svg'>Download</a></li>
+    </ul>
+</div>
+<div id="tools">
+    <ul>
+        <li><b>Mode:</b></li>
+        <li>Current mode: <div id="currentmode"></div></li>
+        <li><button onclick='changeMode("select points")'>select points</button></li>
+        <li><button onclick='changeMode("move points")'>move points</button></li>
+        <li><button onclick='changeMode("add points")'>add points</button></li>
+        <li><button onclick='changeMode("remove points")'>remove points</button></li>
+        <li><button onclick='changeMode("connect points")'>connect points</button></li>
+    </ul>
+    <hr/>
+    <ul id='actions'>
+        <li><b>Actions:</b></li>
+        <li><button onclick='action("change normal")'>change normal</li>
+    </ul>
+    <hr />
+    <ul id='info'>
+        <li><b>Info:</b></li>
+        <li id='next'>Next: </li>
+        <li id='prev'>Previous: </li>
+    </ul>
+</div>
+<div id="svgdiv" onmousedown='svgClick()' onmouseup='svgRelease()'>
+    <canvas id="canvas"></canvas>
+    <svg id="svg"></svg>
+</div>
+</body>
+</html>
