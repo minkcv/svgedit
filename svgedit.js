@@ -20,6 +20,17 @@ document.onmousemove = function(e) {
     mouseY = e.clientY;
 };
 
+function saveJson() {
+	var xyJson = {};
+	for (key in pointsByID) {
+		var point = pointsByID[key];
+		xyJson[key] = {x: point.x, y: point.y};
+	}
+	
+	var textBox = document.getElementById('json-text');
+	textBox.value = JSON.stringify(xyJson);
+}
+
 var changeMode= function(mode) {
     this.mode = mode;
     var modeText = document.getElementById('currentmode');
@@ -234,7 +245,7 @@ var updateHTML = function() {
         }
     }
     var b64 = btoa(svg);
-    var link = document.getElementById('download link');
+    var link = document.getElementById('download-link');
     link.href='data:image/svg+xml;utf8,' + decodeURI(svg.outerHTML);
 };
 
