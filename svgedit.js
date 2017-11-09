@@ -24,6 +24,8 @@ function saveJson() {
 	var xyJson = {};
 	for (key in pointsByID) {
 		var point = pointsByID[key];
+		if (point == null)
+			continue;
 		xyJson[key] = {x: point.x, y: point.y};
 	}
 	
