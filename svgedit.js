@@ -14,6 +14,14 @@ var svg;
 var svgdiv;
 var canvas; // for showing selections and other graphics that are not part of the svg
 var ctx; // canvas context
+var keysDown = [];
+var keys = {shift: 16};
+document.onkeydown = function(e) {
+    keysDown[e.keyCode] = true;
+}
+document.onkeyup = function(e) {
+    delete keysDown[e.keyCode];
+}
 document.captureEvents(Event.MOUSEMOVE);
 document.onmousemove = function(e) {
     mouseX = e.clientX;
@@ -190,6 +198,16 @@ var pickPoint = function(x, y) {
 
 var addPoint = function(x, y, previousPoint) {
     if(previousPoint) {
+        var snap = keys.shift in keysDown;
+        if (snap) {
+            console.log('oh snap');
+            var xd = Math.abs(x - previousPoint.getX());
+            var yd = Math.abs(y - previousPoint.getY());
+            if (xd > yd)
+                y = previousPoint.getY();
+            else
+                x = previousPoint.getX();
+        }
 		if(previousPoint.getNext()) {
 			var newPoint = new Point(x, y, null, previousPoint, pointCount);
 		    pointsByID[pointCount] = newPoint;
