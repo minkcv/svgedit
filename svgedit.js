@@ -41,6 +41,19 @@ function saveJson() {
 	textBox.value = JSON.stringify(xyJson);
 }
 
+function loadJson() {
+	var textBox = document.getElementById('json-text');
+	var xyJson = JSON.parse(textBox.value);
+    var previous = null;
+	for (key in xyJson) {
+        var data = xyJson[key];
+		var point = new Point(data.x, data.y, null, null, key);
+		pointsByID[key] = point;
+        point.setNext(previous);
+        previous = point;
+	}
+}
+
 var changeMode= function(mode) {
     this.mode = mode;
     var modeText = document.getElementById('currentmode');
