@@ -200,7 +200,6 @@ var addPoint = function(x, y, previousPoint) {
     if(previousPoint) {
         var snap = keys.shift in keysDown;
         if (snap) {
-            console.log('oh snap');
             var xd = Math.abs(x - previousPoint.getX());
             var yd = Math.abs(y - previousPoint.getY());
             if (xd > yd)
