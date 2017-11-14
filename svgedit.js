@@ -1,8 +1,8 @@
 var pointCount = 0;
 var svgX = 0;
 var svgY = 0;
-var svgWidth = 1200;
-var svgHeight = 600;
+var svgWidth = 2500;
+var svgHeight = 2500;
 var mouseX = 0;
 var mouseY = 0;
 var pointDivWidth = '5px';
@@ -12,6 +12,7 @@ var mode;
 var pointsByID = {}; // all points by id in JSON
 var svg;
 var svgdiv;
+var scrollContainer;
 var canvas; // for showing selections and other graphics that are not part of the svg
 var ctx; // canvas context
 var keysDown = [];
@@ -110,8 +111,7 @@ var action = function(a) {
 
 window.onload = function() {
     svgdiv = document.getElementById('svgdiv');
-    svgdiv.style.width = svgWidth;
-    svgdiv.style.height = svgHeight;
+	scrollContainer = document.getElementById('scroll-container');
     svg = document.getElementById('svg');
     svg.setAttribute('width', svgWidth);
     svg.setAttribute('height', svgHeight);
@@ -121,16 +121,15 @@ window.onload = function() {
     canvas = document.getElementById('canvas');
     canvas.width = svgWidth;
     canvas.height = svgHeight;
-    canvas.style.position = 'absolute';
-    canvas.style.left = svgX;
-    canvas.style.top = svgY;
+    canvas.style.position = 'relative';
+    canvas.style.top = -svgHeight;
     ctx = canvas.getContext('2d');
     changeMode("select points");
 };
 
 var svgClick = function() {
-    var x = mouseX - svgX;
-    var y = mouseY - svgY;
+    var x = mouseX - svgX + scrollContainer.scrollLeft;
+    var y = mouseY - svgY + scrollContainer.scrollTop;
     
     if(mode == 'select points') {
         selectedPoint = pickPoint(x, y);
