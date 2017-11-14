@@ -52,8 +52,10 @@ function loadJson() {
 		var next = null;
 		for (k2 in pointsByID) {
 			var existing = pointsByID[k2];
-			if (existing.x == data.next.x && existing.y == data.next.y) {
-				next = existing;
+			if (existing) {
+				if (existing.x == data.next.x && existing.y == data.next.y) {
+					next = existing;
+				}
 			}
 		}
 		if (next) {
@@ -111,6 +113,7 @@ var action = function(a) {
 
 window.onload = function() {
     svgdiv = document.getElementById('svgdiv');
+	svgdiv.style.height = svgHeight;
 	scrollContainer = document.getElementById('scroll-container');
     svg = document.getElementById('svg');
     svg.setAttribute('width', svgWidth);
