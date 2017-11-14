@@ -32,9 +32,9 @@ function saveJson() {
 	var xyJson = {};
 	for (key in pointsByID) {
 		var point = pointsByID[key];
-		if (point == null)
+		if (point == null || point.getNext() == null)
 			continue;
-		xyJson[key] = {x: point.x, y: point.y};
+		xyJson[key] = {current:{x: point.x, y: point.y}, next:{x: point.getNext().x, y: point.getNext().y}};
 	}
 	
 	var textBox = document.getElementById('json-text');
@@ -44,14 +44,34 @@ function saveJson() {
 function loadJson() {
 	var textBox = document.getElementById('json-text');
 	var xyJson = JSON.parse(textBox.value);
-    var previous = null;
 	for (key in xyJson) {
         var data = xyJson[key];
-		var point = new Point(data.x, data.y, null, null, key);
-		pointsByID[key] = point;
-        point.setNext(previous);
-        previous = point;
+		var currentId = pointCount;
+		var current = new Point(data.current.x, data.current.y, null, null, currentId);
+		var next = null;
+		for (k2 in pointsByID) {
+			var existing = pointsByID[k2];
+			if (existing.x == data.next.x && existing.y == data.next.y) {
+				next = existing;
+			}
+		}
+		if (next) {
+			current.setNext(next);
+			next.setPrevious(current);
+		}
+		else {
+			var nextId = currentId + 1;
+			next = new Point(data.next.x, data.next.y, null, null, nextId);
+			pointsByID[nextId] = next;
+			current.setNext(next);
+			next.setPrevious(current);
+			pointCount++;
+		}
+		pointsByID[currentId] = current;
+		pointCount++;
 	}
+	updateHTML();
+    updateCanvas();
 }
 
 var changeMode= function(mode) {
