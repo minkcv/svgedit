@@ -208,8 +208,8 @@ var svgClick = function() {
 
 var svgRelease = function() {
     if(mode == 'move points' && selectedPoint) {
-        var x = mouseX - svgX;
-        var y = mouseY - svgY;
+        var x = mouseX - svgX + scrollContainer.scrollLeft;
+		var y = mouseY - svgY + scrollContainer.scrollTop;
         selectedPoint.setPosition(x, y);
         updateCanvas();
         updateHTML();
