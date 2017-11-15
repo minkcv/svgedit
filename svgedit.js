@@ -33,9 +33,16 @@ function saveJson() {
 	var xyJson = {};
 	for (key in pointsByID) {
 		var point = pointsByID[key];
-		if (point == null || point.getNext() == null)
+		if (point == null)
 			continue;
-		xyJson[key] = {current:{x: point.x, y: point.y}, next:{x: point.getNext().x, y: point.getNext().y}};
+		
+		var nextID = -1;
+		if (point.getNext() != null)
+			nextID = point.getNext().getID();
+		var prevID = -1;
+		if (point.getPrevious() != null)
+			prevID = point.getPrevious().getID();
+		xyJson[key] = {x: point.x, y: point.y, next: nextID, previous: prevID};
 	}
 	
 	var textBox = document.getElementById('json-text');
@@ -45,34 +52,29 @@ function saveJson() {
 function loadJson() {
 	var textBox = document.getElementById('json-text');
 	var xyJson = JSON.parse(textBox.value);
+	var maxKey = Number.MIN_SAFE_INTEGER;
 	for (key in xyJson) {
+		if (key > maxKey)
+			maxKey = key;
         var data = xyJson[key];
-		var currentId = pointCount;
-		var current = new Point(data.current.x, data.current.y, null, null, currentId);
+		var current = null;
+		if (pointsByID[key] == null) {
+			current = new Point(data.x, data.y, null, null, key);
+			pointsByID[key] = current;
+		}
+		else
+			current = pointsByID[key];
 		var next = null;
-		for (k2 in pointsByID) {
-			var existing = pointsByID[k2];
-			if (existing) {
-				if (existing.x == data.next.x && existing.y == data.next.y) {
-					next = existing;
-				}
-			}
+		if (data.next >= 0 && pointsByID[data.next] != null) {
+			current.setNext(pointsByID[data.next]);
+			pointsByID[data.next].setPrevious(current);
 		}
-		if (next) {
-			current.setNext(next);
-			next.setPrevious(current);
+		if (data.previous >= 0 && pointsByID[data.previous] != null) {
+			current.setPrevious(pointsByID[data.previous]);
+			pointsByID[data.previous].setNext(current);
 		}
-		else {
-			var nextId = currentId + 1;
-			next = new Point(data.next.x, data.next.y, null, null, nextId);
-			pointsByID[nextId] = next;
-			current.setNext(next);
-			next.setPrevious(current);
-			pointCount++;
-		}
-		pointsByID[currentId] = current;
-		pointCount++;
 	}
+	pointCount = maxKey;
 	updateHTML();
     updateCanvas();
 }
