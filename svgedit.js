@@ -189,6 +189,27 @@ var svgClick = function() {
     else if(mode == 'move points') {
         selectedPoint = pickPoint(x, y);
     }
+	else if (mode == 'disconnect points') {
+		var chosenPoint = pickPoint(x, y);
+		if (chosenPoint) {
+			var next = chosenPoint.getNext();
+			var prev = chosenPoint.getPrevious();
+			if (next){
+				if (next.getNext() && next.getNext().getID() == chosenPoint.getID())
+					next.setNext(null);
+				else if (next.getPrevious() && next.getPrevious().getID() == chosenPoint.getID())
+					next.setPrevious(null);
+				chosenPoint.setNext(null);
+			}
+			if (prev) {
+				if (prev.getNext() && prev.getNext().getID() == chosenPoint.getID())
+					prev.setNext(null);
+				else if (prev.getPrevious() && prev.getPrevious().getID() == chosenPoint.getID())
+					prev.setPrevious(null);
+				chosenPoint.setPrevious(null);
+			}
+		}
+	}
     if(selectedPoint) {
         displayInfo(true);
         var nodes = document.getElementById('info').childNodes;
