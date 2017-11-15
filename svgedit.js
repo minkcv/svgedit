@@ -16,9 +16,21 @@ var scrollContainer;
 var canvas; // for showing selections and other graphics that are not part of the svg
 var ctx; // canvas context
 var keysDown = [];
-var keys = {shift: 16};
+var keys = {shift: 16, a: 65, s: 83, d: 68, r: 82, c: 67, v:86};
 document.onkeydown = function(e) {
     keysDown[e.keyCode] = true;
+	if (keys.a in keysDown)
+		changeMode('add points');
+	if (keys.s in keysDown)
+		changeMode('select points');
+	if (keys.d in keysDown)
+		changeMode('disconnect points');
+	if (keys.r in keysDown)
+		changeMode('remove points');
+	if (keys.c in keysDown)
+		changeMode('connect points');
+	if (keys.v in keysDown)
+		changeMode('move points');
 }
 document.onkeyup = function(e) {
     delete keysDown[e.keyCode];
