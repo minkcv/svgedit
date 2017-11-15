@@ -66,8 +66,8 @@ function loadJson() {
 	var xyJson = JSON.parse(textBox.value);
 	var maxKey = Number.MIN_SAFE_INTEGER;
 	for (key in xyJson) {
-		if (key > maxKey)
-			maxKey = key;
+		if (parseInt(key) > maxKey)
+			maxKey = parseInt(key);
         var data = xyJson[key];
 		var current = null;
 		if (pointsByID[key] == null) {
@@ -86,7 +86,7 @@ function loadJson() {
 			pointsByID[data.previous].setNext(current);
 		}
 	}
-	pointCount = maxKey;
+	pointCount = maxKey + 1;
 	updateHTML();
     updateCanvas();
 }
